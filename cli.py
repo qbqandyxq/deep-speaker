@@ -74,13 +74,13 @@ def main():
 
     if args.get_embeddings is not None:
         speaker_id = args.get_embeddings.strip()
-        from unseen_speakers import inference_speakers
-        inference_speakers(audio_reader, speaker_id)
+        from unseen_speakers import get_embeddings
+        get_embeddings(audio_reader, speaker_id)
         exit(1)
     if args.get_id is not None:
         speaker_id = args.get_id.strip()
-        from unseen_speakers import inference_embeddings
-        inference_embeddings(audio_reader, speaker_id)
+        from unseen_speakers import inference_speakers
+        inference_speakers(audio_reader, speaker_id)
         exit(1)
 
 

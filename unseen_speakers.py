@@ -136,20 +136,7 @@ def inference_speakers(audio_reader, sp):
     print('*' * 80)
     print(sp_output)
     print('*' * 80)
+    sp_indx=np.where(sp_output==np.max(sp_output))
+    print("speaker is:",int(sp_indx[0])+224)
 
-def softmax(x):
-    x = np.array(x)
-    x = np.exp(x)
-    x.astype('float32')
-    if x.ndim == 1:
-        sumcol = sum(x)
-        for i in range(x.size):
-            x[i] = x[i]/float(sumcol)
-    if x.ndim > 1:
-        sumcol = x.sum(axis = 0)
-        for row in x:
-            for i in range(row.size):
-                row[i] = row[i]/float(sumcol[i])
-    return x
-    
 
