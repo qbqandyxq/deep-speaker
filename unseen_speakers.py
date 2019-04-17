@@ -117,7 +117,7 @@ def inference_speakers(audio_reader, sp):
                               normalize_embeddings=True,
                               batch_size=None)
         
-                              checkpoints = natsorted(glob('checkpoints/*.h5'))
+    checkpoints = natsorted(glob('checkpoints/*.h5'))
 #    print(m.summary())
 
     if len(checkpoints) != 0:
