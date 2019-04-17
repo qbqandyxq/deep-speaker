@@ -107,3 +107,49 @@ def inference_embeddings(audio_reader, speaker_id):
     print('*' * 80)
     print(emb1)
     print('*' * 80)
+
+def inference_speakers(audio_reader, sp):
+    speaker_feat = generate_features_for_unseen_speakers(audio_reader, target_speaker=sp)
+    
+    # batch_size => None (for inference).
+    m = triplet_softmax_model(num_speakers_softmax=len(c.AUDIO.SPEAKERS_TRAINING_SET),
+                              emb_trainable=False,
+                              normalize_embeddings=True,
+                              batch_size=None)
+        
+                              checkpoints = natsorted(glob('checkpoints/*.h5'))
+#    print(m.summary())
+
+    if len(checkpoints) != 0:
+        checkpoint_file = checkpoints[-1]
+        initial_epoch = int(checkpoint_file.split('/')[-1].split('.')[0].split('_')[-1])
+        logger.info('Initial epoch is {}.'.format(initial_epoch))
+        logger.info('Loading checkpoint: {}.'.format(checkpoint_file))
+        m.load_weights(checkpoint_file)  # latest one.
+
+    emb_sp1 = m.predict(np.vstack(speaker_feat))[0]
+
+
+    np.set_printoptions(suppress=True)
+    emb1 = np.mean(emb_sp1, axis=0)
+
+    print('*' * 80)
+    print(emb1)
+    print('*' * 80)
+
+def softmax(x):
+    x = np.array(x)
+    x = np.exp(x)
+    x.astype('float32')
+    if x.ndim == 1:
+        sumcol = sum(x)
+        for i in range(x.size):
+            x[i] = x[i]/float(sumcol)
+    if x.ndim > 1:
+        sumcol = x.sum(axis = 0)
+        for row in x:
+            for i in range(row.size):
+                row[i] = row[i]/float(sumcol[i])
+    return x
+    
+
