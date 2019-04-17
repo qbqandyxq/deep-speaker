@@ -127,14 +127,14 @@ def inference_speakers(audio_reader, sp):
         logger.info('Loading checkpoint: {}.'.format(checkpoint_file))
         m.load_weights(checkpoint_file)  # latest one.
 
-    emb_sp1 = m.predict(np.vstack(speaker_feat))[0]
+    sp_output = m.predict(np.vstack(speaker_feat))[1]
 
 
     np.set_printoptions(suppress=True)
-    emb1 = np.mean(emb_sp1, axis=0)
+    sp_output = np.mean(sp_output, axis=0)
 
     print('*' * 80)
-    print(emb1)
+    print(sp_output)
     print('*' * 80)
 
 def softmax(x):
